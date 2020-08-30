@@ -1,0 +1,9 @@
+# Project exclude paths
+*.iml
+.idea
+/target/
+.mvn
+mvnw
+mvn.cmd
+HELP.md
+*.class
