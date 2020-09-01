@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+    <h2>th:text</h2>
+    <span th:text="张三"></span><br>
+    <span th:text="${msg}"></span><br>
+    <span th:text="${msg}">我会被替换掉</span><br>
+    <hr/>
+
+    <h2>th:value</h2>
+    <p>只能对input标签赋值</p>
+    <input th:value="${msg}"/>
+
+    <h2>字符串操作</h2>
+    <p>和java中的String类类似</p>
+    msg内容:<span th:text="${msg}"></span><br>
+    判断msg非空:<span th:text="${#strings.isEmpty(msg)}"></span><br>
+    判断msg长度:<span th:text="${#strings.length(msg)}"></span><br>
+    开头msg以‘H’开头:<span th:text="${#strings.startsWith(msg,'H')}"></span><br>
+    开头msg以‘H’结尾:<span th:text="${#strings.endsWith(msg,'H')}"></span><br>
+    msg从第2位截取到末尾:<span th:text="${#strings.substring(msg,2)}"></span><br>
+    msg从第2位截取到第5位:<span th:text="${#strings.substring(msg,2,5)}"></span><br>
+
+    <h2>日期操作</h2>
+    默认日期${date}:<span th:text="${date}"></span><br>
+    格式化1${#dates.format(date)}:<span th:text="${#dates.format(date)}"></span><br>
+    格式化2${#dates.format(date,'yyyy-MM-dd hh:mm:ss')}:<span th:text="${#dates.format(date,'yyyy-MM-dd hh:mm:ss')}"></span><br>
+    年${#dates.year(date)}:<span th:text="${#dates.year(date)}"></span><br>
+    月${#dates.month(date)}:<span th:text="${#dates.month(date)}"></span><br>
+    日${#dates.day(date)}:<span th:text="${#dates.day(date)}"></span><br>
+
+    <h2>th:if</h2>
+    <div>
+        <span th:if="${id} == 1">id为1</span>
+        <span th:if="${id} == 2">id为2</span>
+    </div>
+
+    <h2>th:switch</h2>
+    <div th:switch="${id}">
+        <span th:case="1">id为1</span>
+        <span th:case="2">id为2</span>
+        <span th:case="*">未匹配</span>
+    </div>
+
+    <h2>th:each 遍历list集合</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user:${users}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.sex}"></td>
+                <td th:text="${user.age}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>th:each 状态变量</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>index</th>
+                <th>count</th>
+                <th>current</th>
+                <th>size</th>
+                <th>odd（奇数）</th>
+                <th>even（偶数）</th>
+                <th>fist</th>
+                <th>last</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user,status:${users}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.sex}"></td>
+                <td th:text="${user.age}"></td>
+                <td th:text="${status.index}"></td>
+                <td th:text="${status.count}"></td>
+                <td th:text="${status.current}"></td>
+                <td th:text="${status.size}"></td>
+                <td th:text="${status.odd}"></td>
+                <td th:text="${status.even}"></td>
+                <td th:text="${status.first}"></td>
+                <td th:text="${status.last}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>th:each 遍历map集合</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>key</th>
+            <th>value</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>年龄</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user:${userMap}">
+            <td th:text="${user.key}"></td>
+            <td th:text="${user.value}"></td>
+            <td th:text="${user.value.name}"></td>
+            <td th:text="${user.value.sex}"></td>
+            <td th:text="${user.value.age}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>操作域对象</h2>
+    ${#httpServletRequest.getAttribute('req')}:<span th:text="${#httpServletRequest.getAttribute('req')}"></span><br>
+    ${#request.getAttribute('req')}:<span th:text="${#request.getAttribute('req')}"></span><br>
+    ${#session.getAttribute('ses')}:<span th:text="${#session.getAttribute('ses')}"></span><br>
+    ${session.ses}:<span th:text="${session.ses}"></span><br>
+    ${#servletContext.getAttribute('app')}:<span th:text="${#servletContext.getAttribute('app')}"></span><br>
+    ${application.app}:<span th:text="${application.app}"></span><br>
+
+    <h2>URL表达式</h2>
+    绝对路径：<a th:href="@{http://www.baidu.com}">百度一下</a><br>
+    相对路径：<br>
+    相对当前项目的根：<a th:href="@{/show2}">访问show2 controller</a><br>
+    相对服务器路径的根：<a th:href="@{~/project2/resourcename}">暂时无法访问</a><br>
+
+    <h2>普通URL传递参数</h2>
+    <a th:href="@{/show2?msg=1234&date=2020/08/30 18:30:22}">传递参数方式1</a><br>
+    <a th:href="@{/show2(msg=1234,date='2020/08/30 18:30:22')}">传递参数方式2</a><br>
+    <a th:href="@{'/show2?msg='+${msg}+'&date='+${date}}">传递参数方式3</a><br>
+    <a th:href="@{/show2(msg=${msg},date=${date})}">传递参数方式4</a><br>
+
+    <h2>URL中使用restful风格传递参数</h2>
+    <a th:href="@{/show3/{id}/{name}(id=20,name='张三')}">restful风格传递参数方式1</a><br>
+    <a th:href="@{/show4/{id}(id=10,name='张三')}">restful风格传递参数方式2</a><br>
+    <a th:href="@{/show4/{id}(id=10,name=${msg})}">restful风格传递参数方式3</a><br>
+
+
+</body>
+</html>

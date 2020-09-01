@@ -1,7 +1,7 @@
 # Project exclude paths
 *.iml
 .idea
-target/
+target
 .mvn
 mvnw
 mvn.cmd
