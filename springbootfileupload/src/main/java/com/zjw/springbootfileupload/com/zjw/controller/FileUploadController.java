@@ -12,6 +12,8 @@ import java.util.List;
 @RestController
 public class FileUploadController {
 
+    private static final String rootPath = "/upload/";
+
     @RequestMapping(value = "/upload")
     public String upload(@RequestParam("file") MultipartFile file) {
         try {
@@ -23,7 +25,7 @@ public class FileUploadController {
             // 获取文件的后缀名
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
             // 设置文件存储路径
-            String filePath = "D:/文件上传/";
+            String filePath = rootPath;
             String path = filePath + fileName;
             File dest = new File(path);
             // 检测是否存在目录
@@ -50,7 +52,7 @@ public class FileUploadController {
     public String fileUpload(MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();
         System.out.println(fileName);
-        file.transferTo(new File("D:/文件上传/"+fileName));
+        file.transferTo(new File(rootPath+fileName));
         return "OK";
     }
 
@@ -66,7 +68,7 @@ public class FileUploadController {
         BufferedOutputStream stream = null;
         for (int i = 0; i < files.size(); ++i) {
             file = files.get(i);
-            String filePath = "D:/文件上传/";
+            String filePath = rootPath;
             if (!file.isEmpty()) {
                 try {
                     byte[] bytes = file.getBytes();
@@ -92,7 +94,7 @@ public class FileUploadController {
         String fileName = "a.txt";// 文件名
         if (fileName != null) {
             //设置文件路径
-            File file = new File("D:/a.txt");
+            File file = new File(rootPath+"/"+fileName);
             //File file = new File(realPath , fileName);
             if (file.exists()) {
                 response.setContentType("application/force-download");// 设置强制下载不打开
